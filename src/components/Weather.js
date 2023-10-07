@@ -124,7 +124,7 @@ const Weather = () => {
                   className="w-32 mx-auto mb-6"
                 />
                 <h2
-                  className="text-2xl text-gray-400 font-semibold text-gray-600 uppercase mb-2"
+                  className="text-2xl text-gray-400 font-semibold uppercase mb-2"
                   style={{ letterSpacing: "2px" }}
                 >
                   "{showWeather[0]}"
