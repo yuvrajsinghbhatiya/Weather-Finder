@@ -22,12 +22,12 @@ module.exports = {
         },
       },
       backgroundColor: {
-        'primary': '#2b4162',
-        'secondary': '#12100e',
+        'primary': '#4d6b99',
+        'secondary': '#0a0c0d',
       },
       gradientColorStops: {
-        'primary': '#2b4162',
-        'secondary': '#12100e',
+        'primary': '#4d6b99',
+        'secondary': '#0a0c0d',
       },
     },
   },

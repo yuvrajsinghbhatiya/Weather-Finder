@@ -8,7 +8,7 @@ const Navbar = () => {
         <button onClick={() => window.location.reload()}>
           <BiHomeAlt2 size={30} className="cursor-pointer text-primary" />
         </button>
-        <h1 className="text-2xl text-primary md:text-2xl lg:text-3xl xl:text-4xl font-semibold" style={{ letterSpacing: '1px'}}>
+        <h1 className="text-2xl text-primary md:text-2xl lg:text-3xl xl:text-4xl font-semibold mt-2" style={{ letterSpacing: '1px'}}>
           WEATHER FiNDER
         </h1>
       </div>
