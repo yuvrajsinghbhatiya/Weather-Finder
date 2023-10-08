@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
 import { FaSearch } from "react-icons/fa";
-import { TbTemperature } from "react-icons/tb";
 import { BiLoaderCircle } from "react-icons/bi";
 import clearIcon from "../img/Clear.png";
 import rainIcon from "../img/Rain.png";
@@ -67,22 +66,10 @@ const Weather = () => {
     }
   };
 
-  const calculateShowWeatherHeight = () => {
-    if (showWeather) {
-      const totalHeight = showWeather.length * 40;
-      const minHeight = Math.min(totalHeight, 200);
-
-      return `h-[${minHeight}px] sm:h-[${minHeight}px] md:h-[${minHeight}px] lg:h-[${minHeight}px] xl:h-[${minHeight}px]`;
-    } else {
-      return "h-1";
-    }
-  };
-
-
   return (
-    <div className="bg-gradient-to-tr from-primary to-secondary h-screen flex flex-col items-center justify-center p-8 sm:p-6 md:p-6 lg:p-6 xl:p-6">
+    <div className="bg-gradient-to-tr from-primary to-secondary min-h-screen flex flex-col items-center justify-center p-8 sm:p-6 md:p-6 lg:p-6 xl:p-6">
       <div className="bg-gradient-to-tl w-80 md:w-96 lg:w-108 xl:w-120 p-3 rounded-xl pt-8 mt-4 sm:mt-6 md:mt-6 lg:mt-6 xl:mt-6">
-        <div className="flex items-center justify-center w-auto">
+        <div className="flex items-center justify-center w-auto mb-4">
           <input
             type="text"
             id="locationInput"
@@ -100,47 +87,39 @@ const Weather = () => {
           </button>
         </div>
 
-        <div
-          className={`duration-300 delay-75 overflow-hidden mt-4 ${calculateShowWeatherHeight()}`}
-        >
+        <div className="duration-300 delay-75 overflow-hidden mt-4">
           {loading ? (
             <div className="grid place-items-center h-full">
-              <BiLoaderCircle className="w-14 h-14 mx-auto mb-2 animate-spin" />
+              <BiLoaderCircle className="w-14 h-14 mx-auto mb-2 animate-spin text-gray-400" />
             </div>
           ) : (
+            !loading &&
             showWeather && (
-              <div className="text-center flex flex-col gap-4 mt-4">
-                {apiData && (
-                  <p
-                    className="text-3xl text-gray-400 font-semibold mb-4"
-                    style={{ letterSpacing: "2px" }}
-                  >
-                    {apiData?.name + ", " + apiData?.sys?.country}
-                  </p>
-                )}
-                <img
-                  src={WeatherIcons[showWeather[0]]}
-                  alt="Weather Icon"
-                  className="w-32 mx-auto mb-6"
-                />
-                <h2
-                  className="text-2xl text-gray-400 font-semibold uppercase mb-2"
-                  style={{ letterSpacing: "2px" }}
-                >
-                  "{showWeather[0]}"
-                </h2>
-
-                {apiData && (
-                  <div className="flex justify-center items-center">
-                    <TbTemperature size={22} className="text-gray-400 mr-1" />
-                    <h2
-                      className="text-2xl text-gray-400 font-semibold"
-                      style={{ letterSpacing: "1px" }}
-                    >
-                      {apiData?.main?.temp}&#176;C
+              <div className="text-center flex flex-col gap-4 mt-4 w-full sm:w-auto">
+                {/* Current weather */}
+                <div className="flex justify-between items-center w-full p-4 bg-gradient-to-tr rounded-lg shadow-md">
+                  <div className="flex flex-col items-center ml-4 mr-4">
+                    <h2 className="text-5xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-6xl text-gray-200 font-semibold mb-2">
+                      {Math.floor(apiData?.main?.temp)}&#176;C
                     </h2>
+                    <p className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl text-gray-200">
+                      {apiData?.name + ", " + apiData?.sys?.country}
+                    </p>
                   </div>
-                )}
+                  <div className="flex flex-col items-center ml-4 mr-4">
+                    <img
+                      src={WeatherIcons[showWeather[0]]}
+                      alt="Weather Icon"
+                      className="w-16 mb-2"
+                    />
+                    <p className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl text-gray-200 mt-2">
+                      "{showWeather[0]}"
+                    </p>
+                  </div>
+                </div>
+
+
+                
               </div>
             )
           )}
