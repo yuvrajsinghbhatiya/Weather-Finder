@@ -38,7 +38,7 @@ const Weather = () => {
     
     fetchData();
   }, []);
-
+  
   const WeatherIcons = {
     Clear: clearIcon,
     Rain: rainIcon,
@@ -90,10 +90,6 @@ const Weather = () => {
   };
 
   return (
-    <>
-    <div className="bg-gray-200">
-      <h1>{cityName}</h1>
-    </div>
     <div className="bg-gradient-to-tr from-primary to-secondary min-h-screen flex flex-col items-center justify-center p-8 sm:p-6 md:p-6 lg:p-6 xl:p-6">
       <div className="bg-gradient-to-tl w-80 md:w-96 lg:w-108 xl:w-120 p-3 rounded-xl pt-8 mt-4 sm:mt-6 md:mt-6 lg:mt-6 xl:mt-6">
         <div className="flex items-center justify-center w-auto mb-4">
@@ -153,7 +149,6 @@ const Weather = () => {
         </div>
       </div>
     </div>
-    </>
   );
 };
 
