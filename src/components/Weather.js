@@ -1,4 +1,5 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
+import axios from "axios"
 import { FaSearch } from "react-icons/fa";
 import { BiLoaderCircle } from "react-icons/bi";
 import clearIcon from "../img/Clear.png";
@@ -17,7 +18,26 @@ const Weather = () => {
   const [apiData, setApiData] = useState(null);
   const [showWeather, setShowWeather] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [cityName, setCityName] = useState(""); // State to store the city name
 
+  console.log(cityName)
+
+  useEffect(() => {
+    // Fetch user's IP and then get city name based on IP
+    const fetchData = async () => {
+      try {
+        const ipResponse = await axios.get("https://api.ipify.org/?format=json");
+        const cityResponse = await axios.get(`https://ipapi.co/${ipResponse.data.ip}/json/`);
+        setCityName(cityResponse.data.city);
+      } catch (error) {
+        console.error("Error fetching IP or city name:", error);
+      } finally {
+        setLoading(false); // Set loading to false after fetching city name
+      }
+    };
+    
+    fetchData();
+  }, []);
   const WeatherIcons = {
     Clear: clearIcon,
     Rain: rainIcon,
@@ -28,6 +48,7 @@ const Weather = () => {
     Mist: mistIcon,
     Drizzle: drizzleIcon,
   };
+
 
   const fetchWeather = async () => {
     const cityName = inputRef.current.value;
@@ -59,6 +80,7 @@ const Weather = () => {
       setLoading(false);
     }
   };
+
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
