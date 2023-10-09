@@ -10,6 +10,10 @@ import {
   WiFog,
   WiSmoke,
   WiDayShowers,
+  WiStrongWind,
+  WiHumidity,
+  WiThermometer,
+  WiHorizonAlt,
 } from "react-icons/wi";
 import { RiMistFill } from "react-icons/ri";
 
@@ -20,6 +24,10 @@ const Weather = () => {
   const [apiData, setApiData] = useState(null);
   const [showWeather, setShowWeather] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [windSpeed, setWindSpeed] = useState(null);
+  const [humidity, setHumidity] = useState(null);
+  const [visibility, setVisibility] = useState(null);
+  const [feelsLike, setFeelsLike] = useState(null);
   // const [cityName, setCityName] = useState("");
   // console.log(cityName)
 
@@ -74,6 +82,10 @@ const Weather = () => {
         alert("Sorry!! City not found.");
       } else {
         setShowWeather(data.weather.map((weather) => weather.main));
+        setWindSpeed(data.wind.speed);
+        setHumidity(data.main.humidity);
+        setVisibility(data.visibility / 1000);
+        setFeelsLike(data.main.feels_like);
         setApiData(data);
       }
     } catch (error) {
@@ -90,9 +102,10 @@ const Weather = () => {
   };
 
   return (
-    <div className="bg-gradient-to-tr from-primary to-secondary min-h-screen flex flex-col items-center justify-center p-8 sm:p-6 md:p-6 lg:p-6 xl:p-6">
-      <div className="bg-gradient-to-tl w-80 md:w-96 lg:w-108 xl:w-120 p-3 rounded-xl pt-8 mt-4 sm:mt-6 md:mt-6 lg:mt-6 xl:mt-6">
-        <div className="flex items-center justify-center w-auto mb-4">
+    <>
+    <div className="bg-bodyclr from-primary to-secondary min-h-screen flex flex-col items-center justify-center p-8 sm:p-6 md:p-6 lg:p-6 xl:p-6">
+      <div className="bg-gradient-to-tl w-80 md:w-96 lg:w-108 xl:w-120 p-3 rounded-xl pt-8 mt-4 sm:mt-6 md:mt-6 lg:mt-6 xl:mt-6 shadow-lg">
+        <div className="flex items-center justify-center w-auto mb-4 ">
           <input
             type="text"
             id="locationInput"
@@ -118,8 +131,8 @@ const Weather = () => {
           ) : (
             !loading &&
             showWeather && (
-              <div className="text-center flex flex-col gap-4 mt-4 w-full sm:w-auto">
-                <div className="flex justify-between items-center w-full p-4 bg-gradient-to-tr rounded-lg shadow-md">
+              <div className="text-center flex flex-col gap-4 mt-4 w-full sm:w-auto ">
+                <div className="flex justify-between items-center w-full p-4 bg-gradient-to-tr rounded-lg ">
                   <div className="flex flex-col items-center ml-4 mr-4">
                     <h2 className="text-5xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-6xl text-gray-200 font-semibold mb-2">
                       {Math.floor(apiData?.main?.temp)}&#176;C
@@ -128,7 +141,7 @@ const Weather = () => {
                       {apiData?.name + ", " + apiData?.sys?.country}
                     </p>
                   </div>
-                  <div className="flex flex-col items-center ml-4 mr-2 text-gray-200">
+                  <div className="flex flex-col items-center ml-4 mr-2 text-gray-200 ">
                     {WeatherIcons[showWeather[0]]}
                     <p
                       className="text-xl sm:text-xl md:text-xl lg:text-xl xl:text-xl mt-2 lg:mt-4 xl:mt-4"
@@ -138,12 +151,33 @@ const Weather = () => {
                     </p>
                   </div>
                 </div>
+                <div className="flex sm:justify-around justify-around items-center text-gray-200 w-full p-4 bg-gradient-to-tl rounded-lg">
+                  <div className="flex items-center">
+                    <WiStrongWind size={24} style={{ marginRight: "8px" }} />
+                    <p className="text-1xl">{windSpeed} m/s</p>
+                  </div>
+                  <div className="flex items-center ml-4 sm:ml-6">
+                    <WiHumidity size={24} style={{ marginRight: "8px" }} />
+                    <p className="text-1xl">{humidity}%</p>
+                  </div>
+                </div>
+                <div className="flex sm:justify-around justify-around items-center text-gray-200 w-full p-4 bg-gradient-to-tr rounded-lg">
+                  <div className="flex items-center ml-4 sm:ml-6">
+                    <WiHorizonAlt size={24} style={{ marginRight: "8px" }} />
+                    <p className="text-1xl">{visibility} km</p>
+                  </div>
+                  <div className="flex items-center ml-4 sm:ml-6">
+                    <WiThermometer size={24} style={{ marginRight: "8px" }} />
+                    <p className="text-1xl">{feelsLike}°C</p>
+                  </div>
+                </div>
               </div>
             )
           )}
         </div>
       </div>
     </div>
+    </>
   );
 };
 
