@@ -1,15 +1,17 @@
-import React, { useRef, useState, useEffect } from "react";
-import axios from "axios"
+import React, { useRef, useState } from "react";
+// import axios from "axios";
 import { FaSearch } from "react-icons/fa";
 import { BiLoaderCircle } from "react-icons/bi";
-import clearIcon from "../img/Clear.png";
-import rainIcon from "../img/Rain.png";
-import snowIcon from "../img/Snow.png";
-import cloudsIcon from "../img/Clouds.png";
-import hazeIcon from "../img/Haze.png";
-import smokeIcon from "../img/Smoke.png";
-import mistIcon from "../img/Mist.png";
-import drizzleIcon from "../img/Drizzle.png";
+import {
+  WiDaySunny,
+  WiRain,
+  WiSnow,
+  WiCloudy,
+  WiFog,
+  WiSmoke,
+  WiDayShowers,
+} from "react-icons/wi";
+import { RiMistFill } from "react-icons/ri";
 
 const Api_key = "31ef8800789372a8d547db37cdafc654";
 
@@ -18,38 +20,37 @@ const Weather = () => {
   const [apiData, setApiData] = useState(null);
   const [showWeather, setShowWeather] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [cityName, setCityName] = useState(""); // State to store the city name
+  // const [cityName, setCityName] = useState("");
+  // console.log(cityName)
 
-  console.log(cityName)
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const ipResponse = await axios.get("https://api.ipify.org/?format=json");
+  //       const cityResponse = await axios.get(
+  //         `https://ipapi.co/${ipResponse.data.ip}/json/`
+  //       );
+  //       setCityName(cityResponse.data.city);
+  //     } catch (error) {
+  //       console.error("Error fetching IP or city name:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-  useEffect(() => {
-    // Fetch user's IP and then get city name based on IP
-    const fetchData = async () => {
-      try {
-        const ipResponse = await axios.get("https://api.ipify.org/?format=json");
-        const cityResponse = await axios.get(`https://ipapi.co/${ipResponse.data.ip}/json/`);
-        setCityName(cityResponse.data.city);
-      } catch (error) {
-        console.error("Error fetching IP or city name:", error);
-      } finally {
-        setLoading(false); // Set loading to false after fetching city name
-      }
-    };
-    
-    fetchData();
-  }, []);
-  
+  //   fetchData();
+  // }, []);
+
   const WeatherIcons = {
-    Clear: clearIcon,
-    Rain: rainIcon,
-    Snow: snowIcon,
-    Clouds: cloudsIcon,
-    Haze: hazeIcon,
-    Smoke: smokeIcon,
-    Mist: mistIcon,
-    Drizzle: drizzleIcon,
+    Clear: <WiDaySunny size={48} />,
+    Rain: <WiRain size={48} />,
+    Snow: <WiSnow size={48} />,
+    Clouds: <WiCloudy size={48} />,
+    Haze: <WiFog size={48} />,
+    Smoke: <WiSmoke size={48} />,
+    Mist: <RiMistFill size={48} />,
+    Drizzle: <WiDayShowers size={48} />,
   };
-
 
   const fetchWeather = async () => {
     const cityName = inputRef.current.value;
@@ -81,7 +82,6 @@ const Weather = () => {
       setLoading(false);
     }
   };
-
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
@@ -119,30 +119,25 @@ const Weather = () => {
             !loading &&
             showWeather && (
               <div className="text-center flex flex-col gap-4 mt-4 w-full sm:w-auto">
-                {/* Current weather */}
                 <div className="flex justify-between items-center w-full p-4 bg-gradient-to-tr rounded-lg shadow-md">
                   <div className="flex flex-col items-center ml-4 mr-4">
                     <h2 className="text-5xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-6xl text-gray-200 font-semibold mb-2">
                       {Math.floor(apiData?.main?.temp)}&#176;C
                     </h2>
-                    <p className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl text-gray-200">
+                    <p className="text-xl sm:text-xl md:text-xl lg:text-1xl xl:text-1xl text-gray-200">
                       {apiData?.name + ", " + apiData?.sys?.country}
                     </p>
                   </div>
-                  <div className="flex flex-col items-center ml-4 mr-4">
-                    <img
-                      src={WeatherIcons[showWeather[0]]}
-                      alt="Weather Icon"
-                      className="w-16 mb-2"
-                    />
-                    <p className="text-xl sm:text-xl md:text-xl lg:text-2xl xl:text-2xl text-gray-200 mt-2">
-                      "{showWeather[0]}"
+                  <div className="flex flex-col items-center ml-4 mr-2 text-gray-200">
+                    {WeatherIcons[showWeather[0]]}
+                    <p
+                      className="text-xl sm:text-xl md:text-xl lg:text-xl xl:text-xl mt-2 lg:mt-4 xl:mt-4"
+                      style={{ fontFamily: "monospace" }}
+                    >
+                      '{showWeather[0]}'
                     </p>
                   </div>
                 </div>
-
-
-                
               </div>
             )
           )}
