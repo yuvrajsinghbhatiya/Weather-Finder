@@ -20,7 +20,7 @@ module.exports = {
         zinc: {
           '800': '#12100e',
         },
-        bodyclr: "#63777E",
+        bodyclr: "#273746",
       },
       backgroundColor: {
         'primary': '#4d6b99',
