@@ -14,8 +14,9 @@ import {
   WiHorizonAlt,
   WiSunrise,
   WiSunset,
-  WiThermometer,
+  WiBarometer,
 } from "react-icons/wi";
+
 import { RiMistFill } from "react-icons/ri";
 
 const Api_key = "31ef8800789372a8d547db37cdafc654";
@@ -28,9 +29,10 @@ const Weather = () => {
   const [windSpeed, setWindSpeed] = useState(null);
   const [humidity, setHumidity] = useState(null);
   const [visibility, setVisibility] = useState(null);
-  const [feelslike, setFeelsLike] = useState(null)
+  // const [feelslike, setFeelsLike] = useState(null)
   const [sunrise, setSunrise] = useState(null);
   const [sunset, setSunset] = useState(null);
+  const [aqi, setAqi] = useState(null);
 
   const WeatherIcons = {
     Clear: <WiDaySunny size={48} />,
@@ -88,9 +90,18 @@ const Weather = () => {
       setWindSpeed(weatherData.wind.speed);
       setHumidity(weatherData.main.humidity);
       setVisibility(weatherData.visibility / 1000);
-      setFeelsLike(weatherData.main.feels_like)
+      // setFeelsLike(weatherData.main.feels_like)
       setSunrise(sunriseTime);
       setSunset(sunsetTime);
+
+      //calculate AQI index of the city
+      const aqiURL = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${weatherData.coord.lat}&lon=${weatherData.coord.lon}&appid=${Api_key}`;
+      const aqiResponse = await fetch(aqiURL);
+      const aqiData = await aqiResponse.json();
+      console.log(aqiData);
+      const aqi = aqiData.list[0].main.aqi;
+      console.log(aqi);
+      setAqi(aqi);
       setApiData(weatherData);
     } catch (error) {
       alert(error.message);
@@ -108,20 +119,20 @@ const Weather = () => {
   return (
     <>
       <div className="bg-bodyclr from-primary to-secondary min-h-screen flex flex-col items-center justify-center p-8 sm:p-6 md:p-6 lg:p-6 xl:p-6">
-        <div className="bg-gradient-to-tl w-80 md:w-96 lg:w-108 xl:w-120 p-3 rounded-xl pt-8 mt-4 sm:mt-6 md:mt-6 lg:mt-6 xl:mt-6 shadow-lg">
+        <div className="bg-mainclr w-80 md:w-96 lg:w-108 xl:w-120 p-3 rounded-xl pt-8 mt-4 sm:mt-6 md:mt-6 lg:mt-6 xl:mt-6 shadow-lg">
           <div className="flex items-center justify-center w-auto mb-4 ">
             <input
               type="text"
               id="locationInput"
               ref={inputRef}
               placeholder="Enter Your Location ... "
-              className="text-xl text-gray-200 p-2 sm:p-3 md:p-4 border-gray-300 font-semibold uppercase flex-1 bg-gradient-to-tl rounded-l-xl h-12 px-4 max-w-full mx-auto"
+              className="text-xl text-gray-400 p-2 sm:p-3 md:p-4 border-gray-300 font-semibold uppercase flex-1 bg-divclr rounded-l-xl h-12 px-4 max-w-full mx-auto"
               onKeyPress={handleKeyPress}
               required
             />
             <button
               onClick={fetchWeather}
-              className="w-12 sm:w-16 md:w-20 lg:w-24 xl:w-28 h-12 sm:h-12 flex items-center justify-center bg-gradient-to-tl rounded-r-xl px-4"
+              className="w-12 sm:w-16 md:w-20 lg:w-24 xl:w-28 h-12 sm:h-12 flex items-center justify-center bg-divclr rounded-r-xl px-4"
             >
               <FaSearch size={24} className="text-gray-200" />
             </button>
@@ -136,17 +147,17 @@ const Weather = () => {
               !loading &&
               showWeather && (
                 <div className="text-center flex flex-col gap-4 mt-4 w-full sm:w-auto ">
-                  <div className="flex justify-between items-center w-full p-4 bg-gradient-to-tr rounded-lg ">
+                  <div className="flex justify-between items-center w-full p-4 bg-divclr rounded-lg ">
                     <div className="flex flex-col items-center ml-4 mr-4">
                       <h2 className="text-5xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-6xl text-gray-200 font-semibold mb-2">
                         {Math.floor(apiData?.main?.temp)}&#176;C
                       </h2>
-                      <p className="text-xl sm:text-xl md:text-xl lg:text-1xl xl:text-1xl text-gray-200">
+                      <p className="text-xl sm:text-xl md:text-xl lg:text-1xl xl:text-1xl text-gray-400">
                         {apiData?.name + ", " + apiData?.sys?.country}
                       </p>
                     </div>
                     <div className="flex flex-col items-center ml-4 mr-2 text-gray-200 ">
-                      {WeatherIcons[showWeather[0]]}
+                      {WeatherIcons[showWeather[0]] } 
                       <p
                         className="text-xl sm:text-xl md:text-xl lg:text-xl xl:text-xl mt-2 lg:mt-4 xl:mt-4"
                         style={{ fontFamily: "monospace" }}
@@ -155,39 +166,63 @@ const Weather = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="flex sm:justify-around justify-around items-center text-gray-200 w-full p-4 bg-gradient-to-tl rounded-lg">
-                    <div className="flex items-center">
-                      <WiStrongWind size={18} style={{ marginRight: "8px" }} />
-                      <p className="text-1xl">{windSpeed} m/s</p>
+
+                  <div className="flex sm:justify-around justify-around items-center text-gray-200 w-full p-4 bg-divclr rounded-lg">
+                    <div className="flex flex-col items-center">
+                      <div className="flex items-center">
+                        <WiStrongWind
+                          size={22}
+                          style={{ marginRight: "8px" }}
+                        />
+                        <p className="text-1xl">{windSpeed} m/s</p>
+                      </div>
+                      <p className="text-gray-400 text-xs mt-1">Wind Speed</p>
                     </div>
-                    <div className="flex items-center ml-4 sm:ml-6">
-                      <WiHumidity size={18} style={{ marginRight: "8px" }} />
-                      <p className="text-1xl">{humidity}%</p>
+                    <div className="flex flex-col items-center ml-4 sm:ml-6">
+                      <div className="flex items-center">
+                        <WiHumidity size={22} style={{ marginRight: "8px" }} />
+                        <p className="text-1xl">{humidity} %</p>
+                      </div>
+                      <p className="text-gray-400 text-xs mt-1">Humidity</p>
                     </div>
                   </div>
 
-                  <div className="flex sm:justify-around justify-around items-center text-gray-200 w-full p-4 bg-gradient-to-tr rounded-lg">
-                    <div className="flex items-center ml-4 sm:ml-6">
-                      <WiHorizonAlt
-                        size={18}
-                        style={{ marginRight: "8px", marginLeft: "-1rem" }}
-                      />
-                      <p className="text-1xl">{visibility} km</p>
+                  <div className="flex sm:justify-around justify-around items-center text-gray-200 w-full p-4 bg-divclr rounded-lg">
+                    <div className="flex flex-col items-center ml-4 sm:ml-6">
+                      <div className="flex items-center">
+                        <WiHorizonAlt
+                          size={22}
+                          style={{ marginRight: "8px", marginLeft: "-1rem" }}
+                        />
+                        <p className="text-1xl">{visibility} km</p>
+                      </div>
+                      <p className="text-gray-400 text-xs mt-1">Visibility</p>
                     </div>
-                    <div className="flex items-center ml-4 sm:ml-6">
-                      <WiThermometer size={18} style={{ marginRight: "5px" }} />
-                      <p className="text-1xl">{feelslike}</p>
+                    <div className="flex flex-col items-center ml-10 sm:ml-8">
+                      <div className="flex items-center ml-2">
+                        <WiBarometer size={22} style={{ marginRight: "5px" }} />
+                        <p className="text-1xl">{aqi} AQI</p>
+                      </div>
+                      <p className="text-gray-400 text-xs mt-1 ml-2">
+                        Air Quality Index
+                      </p>
                     </div>
                   </div>
 
-                  <div className="flex sm:justify-around justify-around items-center text-gray-200 w-full p-4 bg-gradient-to-tl rounded-lg">
-                    <div className="flex items-center ml-4 sm:ml-6">
-                      <WiSunrise size={18} style={{ marginRight: "8px" }} />
-                      <p className="text-1xl">{sunrise}</p>
+                  <div className="flex sm:justify-around justify-around items-center text-gray-200 w-full p-4 bg-divclr rounded-lg">
+                    <div className="flex flex-col items-center ml-2 sm:ml-4">
+                      <div className="flex items-center">
+                        <WiSunrise size={22} style={{ marginRight: "8px" }} />
+                        <p className="text-1xl">{sunrise}</p>
+                      </div>
+                      <p className="text-gray-400 text-xs mt-1">Sunrise Time</p>
                     </div>
-                    <div className="flex items-center ml-4 sm:ml-6">
-                      <WiSunset size={18} style={{ marginRight: "8px" }} />
-                      <p className="text-1xl">{sunset}</p>
+                    <div className="flex flex-col items-center ml-4 sm:ml-6">
+                      <div className="flex items-center">
+                        <WiSunset size={22} style={{ marginRight: "8px" }} />
+                        <p className="text-1xl">{sunset}</p>
+                      </div>
+                      <p className="text-gray-400 text-xs mt-1">Sunset Time</p>
                     </div>
                   </div>
                 </div>

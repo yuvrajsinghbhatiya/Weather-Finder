@@ -20,15 +20,17 @@ module.exports = {
         zinc: {
           '800': '#12100e',
         },
-        bodyclr: "#273746",
+        bodyclr: "#0b1115",
+        mainclr: "#375a6c",
+        divclr: "#223742",
       },
       backgroundColor: {
-        'primary': '#4d6b99',
-        'secondary': '#0a0c0d',
+        'primary': '#16222A',
+        'secondary': '#3A6073',
       },
       gradientColorStops: {
-        'primary': '#4d6b99',
-        'secondary': '#0a0c0d',
+        'primary': '#16222A',
+        'secondary': '#3A6073',
       },
     },
   },
