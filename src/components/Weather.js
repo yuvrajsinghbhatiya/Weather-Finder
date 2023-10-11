@@ -215,14 +215,14 @@ const Weather = () => {
                         <WiSunrise size={22} style={{ marginRight: "8px" }} />
                         <p className="text-1xl">{sunrise}</p>
                       </div>
-                      <p className="text-gray-400 text-xs mt-1">Sunrise Time</p>
+                      <p className="text-gray-400 text-xs mt-1">Sunrise</p>
                     </div>
                     <div className="flex flex-col items-center ml-4 sm:ml-6">
                       <div className="flex items-center">
                         <WiSunset size={22} style={{ marginRight: "8px" }} />
                         <p className="text-1xl">{sunset}</p>
                       </div>
-                      <p className="text-gray-400 text-xs mt-1">Sunset Time</p>
+                      <p className="text-gray-400 text-xs mt-1">Sunset</p>
                     </div>
                   </div>
                 </div>
